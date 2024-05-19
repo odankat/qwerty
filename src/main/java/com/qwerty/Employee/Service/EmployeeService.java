@@ -1,6 +1,7 @@
 package com.qwerty.Employee.Service;
 
 import com.qwerty.Employee.Exception.EmployeeAlreadyAddedException;
+import com.qwerty.Employee.Exception.EmployeeNotFoundException;
 import com.qwerty.Employee.Exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
@@ -10,30 +11,42 @@ import java.util.List;
 @Service
 
 public class EmployeeService {
-    List<Employee> employees = new ArrayList<>(List.of());
+    private final List<Employee> employees;
+    public EmployeeService() {
+        this.employees = new ArrayList<>();
+    }
     final int maxEmployees = 10;
 
-    public void addEmployee(Employee employee) {
-        employees.add(employee);
+    public String addEmployee(Employee employee) {
+        if (employees.contains(employee)){
+            throw new EmployeeAlreadyAddedException("такой сотрудник есть");
+        }
         if (employees.size() > maxEmployees) {
             throw new EmployeeStorageIsFullException("превышен лимит количества сотрудников в фирме");
         }
+        employees.add(employee);
+        return employee.toString();
     }
 
-    public void removeEmployee(Employee employee) {
-        for (int i = 0; i < employees.size() || employee.hashCode() == employees.get(i).hashCode(); i++) {
-            employees.remove(i);
+    public String removeEmployee(Employee employee) {
+        if(employees.contains(employee)) {
+            employees.remove(employee);
+            return employee.toString();
         }
-
+        throw new EmployeeNotFoundException("Сотрудника нет");
     }
 
-    public void searchEmployee(Employee employee) {
-        int i = 0;
-        if (employees.get(i) != employee) {
-            for (; i < employees.size(); i++) ;
-        } else {
-            throw new EmployeeAlreadyAddedException("сотрудник не найден");
+    public String findEmployee(Employee employee) {
+        if(employees.contains(employee)) {
+            return employee.toString();
         }
+        throw new EmployeeNotFoundException("Сотрудника нет");
+
 
     }
+
+    public List<Employee> findAll() {
+        return new ArrayList<>(employees);
+    }
+
 }
