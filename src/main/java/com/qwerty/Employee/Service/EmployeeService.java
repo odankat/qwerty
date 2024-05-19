@@ -30,9 +30,9 @@ public class EmployeeService {
         int i = 0;
         if (employees.get(i) != employee) {
             for (; i < employees.size(); i++) ;
-        } else {
+        } else  {
             throw new EmployeeAlreadyAddedException("сотрудник не найден");
         }
-
-    }
+        employee.toString();
+            }
 }

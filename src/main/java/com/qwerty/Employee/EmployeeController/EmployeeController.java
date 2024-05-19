@@ -34,4 +34,11 @@ public class EmployeeController {
         return "[eq";
 
     }
+    @GetMapping("/find")
+    public String find(@RequestParam("firstName") String firstName,
+                         @RequestParam("lastName") String lastName) {
+        Employee employee = new Employee(firstName, lastName);
+        employeeService.searchEmployee(employee);
+        return "";
+    }
 }
