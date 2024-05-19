@@ -24,7 +24,6 @@ public class EmployeeService {
         for (int i = 0; i < employees.size() || employee.hashCode() == employees.get(i).hashCode(); i++) {
             employees.remove(i);
         }
-
     }
 
     public void searchEmployee(Employee employee) {
