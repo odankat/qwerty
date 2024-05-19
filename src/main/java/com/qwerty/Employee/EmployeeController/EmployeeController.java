@@ -39,6 +39,6 @@ public class EmployeeController {
                          @RequestParam("lastName") String lastName) {
         Employee employee = new Employee(firstName, lastName);
         employeeService.searchEmployee(employee);
-        return "";
+        return employee.toString();
     }
 }

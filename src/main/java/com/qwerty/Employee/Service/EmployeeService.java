@@ -14,6 +14,13 @@ public class EmployeeService {
     final int maxEmployees = 10;
 
     public void addEmployee(Employee employee) {
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).hashCode() == employee.hashCode()) {
+                throw new EmployeeAlreadyAddedException("такой есть");
+            }
+
+        }
+
         employees.add(employee);
         if (employees.size() > maxEmployees) {
             throw new EmployeeStorageIsFullException("превышен лимит количества сотрудников в фирме");
@@ -28,11 +35,11 @@ public class EmployeeService {
 
     public void searchEmployee(Employee employee) {
         int i = 0;
-        if (employees.get(i) != employee) {
+        if (employees.get(i).hashCode() != employee.hashCode()) {
             for (; i < employees.size(); i++) ;
-        } else  {
+        } else {
             throw new EmployeeAlreadyAddedException("сотрудник не найден");
         }
-        employee.toString();
-            }
+
+    }
 }
