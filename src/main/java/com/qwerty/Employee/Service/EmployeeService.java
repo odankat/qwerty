@@ -24,16 +24,15 @@ public class EmployeeService {
         for (int i = 0; i < employees.size() || employee.hashCode() == employees.get(i).hashCode(); i++) {
             employees.remove(i);
         }
-
     }
 
     public void searchEmployee(Employee employee) {
         int i = 0;
         if (employees.get(i) != employee) {
             for (; i < employees.size(); i++) ;
-        } else {
+        } else  {
             throw new EmployeeAlreadyAddedException("сотрудник не найден");
         }
-
-    }
+        employee.toString();
+            }
 }
