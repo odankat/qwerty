@@ -1,39 +1,53 @@
 package com.qwerty.Employee.Service;
 
 import com.qwerty.Employee.Exception.EmployeeAlreadyAddedException;
+import com.qwerty.Employee.Exception.EmployeeNotFoundException;
 import com.qwerty.Employee.Exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 
 public class EmployeeService {
-    List<Employee> employees = new ArrayList<>(List.of());
+    public final Map<Integer,Employee> employees;
+    public EmployeeService() {
+        this.employees = new HashMap<>();
+    }
     final int maxEmployees = 10;
 
-    public void addEmployee(Employee employee) {
-        employees.add(employee);
+    public String addEmployee(Integer number, Employee employee) {
+        if (employees.containsKey(number)){
+            throw new EmployeeAlreadyAddedException("такой сотрудник есть");
+        }
         if (employees.size() > maxEmployees) {
             throw new EmployeeStorageIsFullException("превышен лимит количества сотрудников в фирме");
         }
+        employees.put(number,employee);
+        return employee.toString();
     }
 
-    public void removeEmployee(Employee employee) {
-        for (int i = 0; i < employees.size() || employee.hashCode() == employees.get(i).hashCode(); i++) {
-            employees.remove(i);
+    public Employee removeEmployee(Integer number) {
+        if(employees.containsKey(number)) {
+            employees.remove(number);
+            return employees.get(number);
         }
-
+        throw new EmployeeNotFoundException("Сотрудника нет");
     }
 
-    public void searchEmployee(Employee employee) {
-        int i = 0;
-        if (employees.get(i) != employee) {
-            for (; i < employees.size(); i++) ;
-        } else {
-            throw new EmployeeAlreadyAddedException("сотрудник не найден");
+    public String findEmployee(Employee employee) {
+        if(employees.containsKey(employee)) {
+            return employee.toString();
         }
+        throw new EmployeeNotFoundException("Сотрудника нет");
+
 
     }
+
+    public String findAll() {
+        return employees.toString();
+    }
+
+
 }
