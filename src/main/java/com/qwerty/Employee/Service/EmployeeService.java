@@ -5,39 +5,39 @@ import com.qwerty.Employee.Exception.EmployeeNotFoundException;
 import com.qwerty.Employee.Exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 
 public class EmployeeService {
-    private final List<Employee> employees;
+    public final Map<Integer,Employee> employees;
     public EmployeeService() {
-        this.employees = new ArrayList<>();
+        this.employees = new HashMap<>();
     }
     final int maxEmployees = 10;
 
-    public String addEmployee(Employee employee) {
-        if (employees.contains(employee)){
+    public String addEmployee(Integer number, Employee employee) {
+        if (employees.containsKey(number)){
             throw new EmployeeAlreadyAddedException("такой сотрудник есть");
         }
         if (employees.size() > maxEmployees) {
             throw new EmployeeStorageIsFullException("превышен лимит количества сотрудников в фирме");
         }
-        employees.add(employee);
+        employees.put(number,employee);
         return employee.toString();
     }
 
-    public String removeEmployee(Employee employee) {
-        if(employees.contains(employee)) {
-            employees.remove(employee);
-            return employee.toString();
+    public Employee removeEmployee(Integer number) {
+        if(employees.containsKey(number)) {
+            employees.remove(number);
+            return employees.get(number);
         }
         throw new EmployeeNotFoundException("Сотрудника нет");
     }
 
     public String findEmployee(Employee employee) {
-        if(employees.contains(employee)) {
+        if(employees.containsKey(employee)) {
             return employee.toString();
         }
         throw new EmployeeNotFoundException("Сотрудника нет");
@@ -45,8 +45,9 @@ public class EmployeeService {
 
     }
 
-    public List<Employee> findAll() {
-        return new ArrayList<>(employees);
+    public String findAll() {
+        return employees.toString();
     }
+
 
 }
